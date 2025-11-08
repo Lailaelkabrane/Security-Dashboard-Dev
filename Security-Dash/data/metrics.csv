@@ -1,0 +1,5 @@
+metric,value
+total_events,225741.0
+total_benign,97714.0
+total_attacks,128027.0
+attack_rate_pct,56.71411041857704
