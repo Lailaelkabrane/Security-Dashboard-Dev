@@ -81,13 +81,17 @@ with tab2:
 # --- Tab 3: Top IPs & Ports ---
 with tab3:
     col1, col2 = st.columns(2)
-
-    # Top Destination Ports
-    with col1:
+    with col1: 
         if not top_destination_ports_df.empty:
             st.subheader("Top Destination Ports (Top 10)")
+            
+            # Convert port to string to treat as categorical
             top_destination_ports_df["Destination Port"] = top_destination_ports_df["Destination Port"].astype(str)
+            
+            # Take top 10 ports by count
             top_ports_df = top_destination_ports_df.sort_values("count", ascending=False).head(10)
+            
+            # Plot
             top_ports_fig = px.bar(
                 top_ports_df,
                 x="Destination Port",
@@ -97,7 +101,16 @@ with tab3:
                 color="count",
                 color_continuous_scale="Reds"
             )
-            top_ports_fig.update_layout(yaxis_title="Number of Attacks", xaxis_title="Destination Port")
+            
+            # Force x-axis as categorical and adjust layout
+            top_ports_fig.update_layout(
+                xaxis=dict(type='category'),
+                yaxis_title="Number of Attacks",
+                xaxis_title="Destination Port",
+                uniformtext_minsize=8,
+                uniformtext_mode='hide'
+            )
+            
             st.plotly_chart(top_ports_fig, use_container_width=True)
         else:
             st.warning("top_destination_ports.csv not found or empty.")
